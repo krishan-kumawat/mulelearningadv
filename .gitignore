@@ -48,3 +48,8 @@ target/
 velocity.log
 .tooling-project
 .vscode
+
+# ----------
+# ignore the generated fiels
+#
+*.wev

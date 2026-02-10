@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></mule>
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="PingFlow" doc:id="082d548f-1597-48de-b9b4-82077450215b" >
+		<http:listener doc:name="PingListner" doc:id="3c741337-658f-4097-8e14-2583c11127e2" path="/ping" config-ref="HTTP_Listener_config"/>
+		<set-payload value="Ping Successfully" doc:name="Ping Payload" doc:id="606c1bcc-8d84-4b0d-bf7d-077f93717f81" />
+		<logger level="INFO" doc:name="Ping Logger" doc:id="4c478deb-760b-43c8-b2bf-649e11277b31" message="Ping Successfully"/>
+	</flow>
+</mule>
