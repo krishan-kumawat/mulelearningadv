@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="cceb994b-8b9d-4d3c-8286-c8b24b0fa0d8" >
+		<http:listener-connection host="0.0.0.0" port="8000" />
+	</http:listener-config>
+	<db:config name="MysqlDB_Config" doc:name="Database Config" doc:id="7a008f0f-fe82-435e-a5ab-38ab4f238dc4" >
+		<db:my-sql-connection host="${db.host}" port="3306" user="${secure::db.username}" password="${secure::db.password}" database="${db.name}" />
+	</db:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="1b5872d9-6cf8-42d1-83d0-9e48f3932e2f" file="app-${myenv}.yaml" />
+	<global-property doc:name="Global Property" doc:id="33ca847b-3a26-4a1e-9490-4919e9ef5848" name="myenv" value="dev" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="f296395c-e270-4b7f-b068-968bb7cf629a" file="app-secure-${myenv}.yaml" key="mulesoft">
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+
+</mule>

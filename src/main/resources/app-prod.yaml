@@ -1,0 +1,5 @@
+db:
+  host: "127.1.1.10"
+  username: "root"
+  password: "root"
+  name: "classicmodels"
