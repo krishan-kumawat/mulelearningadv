@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<flow name="customwatermarkexample" doc:id="f12c1f70-d9e5-4bf5-908a-a0868ae3e68a" initialState="stopped">
+		<scheduler doc:name="Scheduler" doc:id="f94c5676-0ba9-45c7-84d2-d6667e84d7ce" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</scheduler>
+		<os:retrieve doc:name="Retrieve" doc:id="d0663267-c511-433f-aa01-15669ba2a375" key="emp_id" target="maxid">
+			<os:default-value ><![CDATA[0]]></os:default-value>
+		</os:retrieve>
+		<db:select doc:name="Select Employee Details" doc:id="b657940d-1bdc-4b3a-ac75-4feed4eaa135" config-ref="MysqlDB_Config">
+			<db:sql ><![CDATA[SELECT * FROM employees_details Where Id> :id;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: vars.maxid
+}]]]></db:input-parameters>
+		</db:select>
+		<choice doc:name="Choice" doc:id="bfcbc374-4419-4cd1-b8ca-c5adac7e181d" >
+			<when expression="#[sizeOf(payload) &gt; 0]">
+				<ee:transform doc:name="Transform Message" doc:id="fac78ab3-397e-4068-acf2-b603492ef910">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="95bea526-4a74-48c1-91bc-ab94e4d4863c" message="#[payload]"/>
+				<os:store doc:name="Store Max Emp Id" doc:id="7adbd127-2d83-4bc5-b06c-803ea6b9a028" key="emp_id">
+					<os:value ><![CDATA[#[max(payload.id)]]]></os:value>
+				</os:store>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="1f94b0b6-81f9-4378-8e48-a8ec9bfca969" message="No records found"/>
+			</otherwise>
+		</choice>
+	</flow>
+	<flow name="watermark-ucFlow" doc:id="1d62612b-c901-48b2-9d00-41f5ccccc2e6" initialState="stopped">
+		<db:listener table="employees_details" doc:name="On Table Row" doc:id="c25b1cd7-4f11-4d49-b60f-84a6dc1d5e5f" config-ref="MysqlDB_Config" watermarkColumn="id" idColumn="id">
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" timeUnit="SECONDS" />
+			</scheduling-strategy>
+		</db:listener>
+		<ee:transform doc:name="Transform Message" doc:id="757b4335-e0f6-4937-adda-12778529179d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="214cc210-bf9d-47f2-bd1b-e03be766edfc" message="#[payload]"/>
+	</flow>
+</mule>
