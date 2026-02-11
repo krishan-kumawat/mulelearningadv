@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<ee:object-store-caching-strategy name="Caching_Strategy" doc:name="Caching Strategy" doc:id="61afc3df-2187-4a5f-89de-c198a9978ace" keyGenerationExpression="#[attributes.queryParams.customerId]">
+		<os:private-object-store alias="customerStore" entryTtlUnit="HOURS"/>
+	</ee:object-store-caching-strategy>
+	<flow name="cache-os-usecaseFlow" doc:id="14a45bc2-88e1-485a-94c3-7c7cab1191c8" >
+		<http:listener doc:name="CacheListner" doc:id="7fe16d54-914e-4809-809b-b973968d577c" config-ref="HTTP_Listener_config" path="/cache"/>
+		<ee:cache doc:name="Cache" doc:id="a7021422-9362-4c60-9ec5-8908f3cfed8a" cachingStrategy-ref="Caching_Strategy">
+			<db:select doc:name="SelectCustomers" doc:id="bb87316d-4093-4886-9460-1d45ec1eb1a7" config-ref="MysqlDB_Config">
+			<db:sql><![CDATA[SELECT * FROM classicmodels.customers WHERE customerNumber =:custNumber;]]></db:sql>
+			<db:input-parameters><![CDATA[#[{
+	custNumber: attributes.queryParams.customerId
+}]]]></db:input-parameters>
+		</db:select>
+			<logger level="INFO" doc:name="Logger" doc:id="e6fb2f32-52b3-4074-9ef5-e333b38a77c0" message="#['Customer record has been retrieved for customer Number ']" />
+		</ee:cache>
+		<ee:transform doc:name="Transform Message" doc:id="2e2ae3b5-63e7-4844-850e-4eb91b1bb585" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
