@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="Scatter-Gather-routeFlow" doc:id="b9b724de-8475-4389-b6c1-1bf94c91c206" >
+		<http:listener doc:name="RouteListner" doc:id="55f8875c-599f-46f1-803c-32a0e8541ecb" config-ref="HTTP_Listener_config" path="/sg-products"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="2c5587f4-2229-4640-a507-f5b22870f5ce" >
+			<route >
+				<flow-ref doc:name="Scatter-Gather-rout-httpReqFlow" doc:id="6909b788-cbb1-4aab-aaad-6201acc5e897" name="Scatter-Gather-rout-httpReqFlow"/>
+			</route>
+			<route >
+				<flow-ref doc:name="Scatter-Gather-routeDBFlow" doc:id="90e5e04b-64df-4455-8f03-5dcd4a86a6d9" name="Scatter-Gather-routeDBFlow"/>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Transform Message" doc:id="3f1dac77-26ed-4d1f-80f0-fbe0a3749633" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload..payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="Scatter-Gather-routeFlow1" doc:id="e8ec8b33-9349-4b09-bc97-8e450be7a220" >
+		<http:listener doc:name="Listener" doc:id="9caf79e3-de40-4b00-83bf-a984a37ce706" config-ref="HTTP_Listener_config" path="/http-products"/>
+		<flow-ref doc:name="Scatter-Gather-rout-httpReqFlow" doc:id="f5bf4cab-732d-4b67-8bdc-879a22a5cda2" name="Scatter-Gather-rout-httpReqFlow"/>
+	</flow>
+	<flow name="Scatter-Gather-rout-httpReqFlow" doc:id="60ae8580-f570-4c95-b4a4-a461c87054db" >
+		<http:request doc:name="JSONHTTPReq" doc:id="457e73ce-e6b4-45c0-b4ad-f2952430ee26" config-ref="HTTP_Request_config" path="products"/>
+		<ee:transform doc:name="Transform Message" doc:id="8cc46923-2783-4651-be4c-5f99097cd4d7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.products]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="Scatter-Gather-routeDBFlow" doc:id="b4f03d89-6538-4d91-853c-8a6042caa320" >
+		<db:select doc:name="Select" doc:id="06cf91f3-e2b7-47d3-a989-1705e4be57cc" config-ref="MysqlDB_Config">
+			<db:sql ><![CDATA[SELECT * FROM classicmodels.products Where buyPrice > 100;]]></db:sql>
+		</db:select>
+	</flow>
+</mule>

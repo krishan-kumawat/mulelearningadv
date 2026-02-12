@@ -17,5 +17,9 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="f296395c-e270-4b7f-b068-968bb7cf629a" file="app-secure-${myenv}.yaml" key="mulesoft">
 		<secure-properties:encrypt algorithm="Blowfish" />
 	</secure-properties:config>
+	<http:request-config name="HTTP_Request_config" doc:name="HTTP Request config" doc:id="ee2b96e7-5ee1-44e2-9bfa-52063bc53218">
+		<http:request-connection protocol="HTTPS" host="dummyjson.com" />
+		<http:default-query-params />
+	</http:request-config>
 
 </mule>
