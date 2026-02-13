@@ -450,6 +450,20 @@ type auto_b4f03d89_6538_4d91_853c_8a6042caa320_Output_Attributes = Null
 
 ]]></types:shape>
     </types:type>
+    <types:type name="productscsv" format="csv">
+      <types:shape format="weave"><![CDATA[%dw 2.0
+
+type productscsv = Array<{|  column_0: String,   column_1: String,   column_2: Number|}> {"header": "false",
+"headerLineNumber": "0",
+"isQuotedString": "false"}
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="false"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#94b08ef5-d4fa-4c11-b2da-488d5fc17e42">
     <types:processor-declaration>
@@ -495,6 +509,15 @@ type auto_b4f03d89_6538_4d91_853c_8a6042caa320_Output_Attributes = Null
         <types:message>
           <types:payload type="auto_b4f03d89-6538-4d91-853c-8a6042caa320_Output-Payload"/>
           <types:attributes type="auto_b4f03d89-6538-4d91-853c-8a6042caa320_Output-Attributes"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#69d6e3c3-8e6e-433a-a3b2-a9f50b68e7ba">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="productscsv"/>
         </types:message>
       </types:output-event>
     </types:processor-declaration>
