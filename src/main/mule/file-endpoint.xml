@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="file-endpointFlow" doc:id="1d2498cd-7bbb-4488-b023-e5dcd42cfafd" >
+		<file:listener doc:name="On New or Updated File" doc:id="f3fabf01-1cad-4cdc-847a-9f1944131fea" config-ref="File_Config" directory="MuleInput" autoDelete="true" moveToDirectory="processedfiles" renameTo='#[(attributes.fileName splitBy  ".")[0] ++ (attributes.lastModifiedTime as String replace /[*:.]/ with("_") ) ++ ".csv"]'>
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" startDelay="5" timeUnit="SECONDS" />
+			</scheduling-strategy>
+		</file:listener>
+		<ee:transform doc:name="Transform Message" doc:id="e1d85678-8c90-440e-aa34-d3367e57b755" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="d9ad45c2-ed5a-4620-b812-2e136bb7537a" message="#[payload]"/>
+	</flow>
+</mule>
