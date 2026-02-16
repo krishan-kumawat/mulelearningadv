@@ -464,6 +464,24 @@ type productscsv = Array<{|  column_0: String,   column_1: String,   column_2: N
         <types:property name="isQuotedString" value="false"/>
       </types:properties>
     </types:type>
+    <types:type name="productjson" format="json">
+      <types:shape format="weave" example="product.json"><![CDATA[%dw 2.0
+
+type productjson = {|
+  productId: Number {"typeId": "int"}, 
+  Name: String, 
+  description: String, 
+  originalPrice: Number {"typeId": "int"}, 
+  offer: {|
+    offerPrice: Number {"typeId": "int"}, 
+    offerValidUntil: Number {"typeId": "double"}
+  |}, 
+  brandName: String, 
+  images: Array<String>
+|} {"example": "{\\\"productId\\\":1,\\\"Name\\\":\\\"HP Pavilion Laptop\\\",\\\"description\\\":\\\"HP Laptop\\\",\\\"originalPrice\\\":100000,\\\"offer\\\":{\\\"offerPrice\\\":1000,\\\"offerValidUntil\\\":14578855665656},\\\"brandName\\\":\\\"HP\\\",\\\"images\\\":[\\\"image1\\\",\\\"image2\\\",\\\"image3\\\"]}"}
+
+]]></types:shape>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#94b08ef5-d4fa-4c11-b2da-488d5fc17e42">
     <types:processor-declaration>
@@ -520,6 +538,15 @@ type productscsv = Array<{|  column_0: String,   column_1: String,   column_2: N
           <types:payload type="productscsv"/>
         </types:message>
       </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#f3932cbf-9e37-4d3a-8bcb-e6e7adf28845">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="productjson"/>
+        </types:message>
+      </types:input-event>
     </types:processor-declaration>
   </types:enrichment>
 </types:mule>

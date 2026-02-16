@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="dw-introFlow" doc:id="76eaf0c8-d92e-478b-aa16-29162bd65c2b" >
+		<ee:transform doc:name="Transform Message" doc:id="0954adf9-d494-4c94-9350-5b0296e58576" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+
+//var obj = {"a":1}
+
+var words = ["okayyyyy!", "Apple", "Mule", "Soft", "hi"]
+
+---
+
+words orderBy $$
+
+//words orderBy sizeOf($)
+
+//words
+//words orderBy (item, index) -> sizeOf(item)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dw-introFlow1" doc:id="3e2e36ce-aa22-4c55-9fad-e7d9b558bcf1" >
+		<http:listener doc:name="Listener" doc:id="6a9b3c0e-f972-4bd8-ac8e-c7aa6b4fc693" config-ref="HTTP_Listener_config" path="/payload-json"/>
+		<ee:transform doc:name="Transform Message" doc:id="f3932cbf-9e37-4d3a-8bcb-e6e7adf28845" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
