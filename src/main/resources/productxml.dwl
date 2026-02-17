@@ -3,6 +3,8 @@ output application/json
 
 import dwpractice::reusablefunc
 
+import * from dwpractice::reusablefunc2
+
 /*
  * Single line function 
  */
@@ -23,5 +25,6 @@ fun calculatePriceAfterDiscountWithMorePercentage(originalPrice, offerPrice, per
 	"Name": payload.Name,
 	"salePrice": calculatePriceAfterDiscount(payload.originalPrice, payload.offer.offerPrice),
 	salePriceAfDis: calculatePriceAfterDiscountWithMorePercentage(payload.originalPrice, payload.offer.offerPrice, 10),
-	"sum": reusablefunc::result(8, 9)
+	"sum": reusablefunc::result(8, 9),
+	"Square": square(5)
 }
