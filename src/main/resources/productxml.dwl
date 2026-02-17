@@ -1,10 +1,27 @@
 %dw 2.0
-output application/xml
----
+output application/json
+
+import dwpractice::reusablefunc
+
 /*
- * add attribute in xml output
+ * Single line function 
  */
-product @(pid: payload.productId): {
-	"name": payload.Name
+fun calculatePriceAfterDiscount(originalPrice, offerPrice)=
+	originalPrice - offerPrice
+	
+/**
+ * Multi-line function
+ */
+fun calculatePriceAfterDiscountWithMorePercentage(originalPrice, offerPrice, percentage) = do{
+	var price = originalPrice - offerPrice
+	var disPrice = price - (percentage/100 * price)
+	---
+	disPrice
 }
- 
+---
+{
+	"Name": payload.Name,
+	"salePrice": calculatePriceAfterDiscount(payload.originalPrice, payload.offer.offerPrice),
+	salePriceAfDis: calculatePriceAfterDiscountWithMorePercentage(payload.originalPrice, payload.offer.offerPrice, 10),
+	"sum": reusablefunc::result(8, 9)
+}

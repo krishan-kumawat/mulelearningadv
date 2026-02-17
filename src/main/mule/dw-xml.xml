@@ -15,6 +15,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 				<ee:set-variable resource="productNameVar.dwl" variableName="productNameVar" />
 			</ee:variables>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="25d06180-1cac-480e-91bc-0e06f1e74798" message="#[vars.productNameVar]"/>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="61f5059a-7fb3-44d4-b84a-2cccf846e9a4" />
+		<logger level="INFO" doc:name="Logger" doc:id="e586aa34-dba4-40af-b165-0235da2d0116" message="#[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="36701760-27cb-4dde-8315-116f743c4372" message='#["ProductName " ++ vars.productNameVar]'/>
 	</flow>
 </mule>
