@@ -22,9 +22,10 @@ fun calculatePriceAfterDiscountWithMorePercentage(originalPrice, offerPrice, per
 }
 ---
 {
-	"Name": payload.Name,
+	"Name": upper(payload.Name),
 	"salePrice": calculatePriceAfterDiscount(payload.originalPrice, payload.offer.offerPrice),
 	salePriceAfDis: calculatePriceAfterDiscountWithMorePercentage(payload.originalPrice, payload.offer.offerPrice, 10),
 	"sum": reusablefunc::result(8, 9),
-	"Square": square(5)
+	"Square": square(5),
+	"UpperNull": upper(Null)
 }

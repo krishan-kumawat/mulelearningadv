@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="join-datasetFlow" doc:id="2eedd4bb-818a-494d-b81c-28063ea504e7" >
+		<ee:transform doc:name="Transform Message" doc:id="f17db3c9-fb7c-450b-ad57-f8bc073231e8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+
+var num = [1,2,3,4,5,6]
+var citiesXml = readUrl("classpath://examples/cities.xml", "application/xml")
+var statesXml = readUrl("classpath://examples/states.xml", "application/xml")
+
+/**
+ * Select state by their name
+ */
+fun getStatesByName(name) =
+	statesXml.states.*state.@[?($.name == name)][0]
+
+/**
+ * Join city with state
+ */
+var joinedCities = citiesXml.cities.*city map {
+	city: {
+		cityName: $.city_name,
+		state: sortObjectByKeys(getStatesByName($.state_name))
+	}
+}
+
+fun sortObjectByKeys(obj)= do{
+	var state = getStatesByName(obj.name)
+	var sortedKeys = pluck(state, (V, K)-> K) orderBy $
+	var keyValueArray = sortedKeys map {
+		($): state[$]
+	}
+	---
+	{
+		(keyValueArray)
+	}
+} 
+---
+//getStatesByName('California')
+//sortObjectByKeys(getStatesByName('California'))
+
+joinedCities
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

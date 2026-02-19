@@ -19,4 +19,23 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<logger level="INFO" doc:name="Logger" doc:id="e586aa34-dba4-40af-b165-0235da2d0116" message="#[payload]"/>
 		<logger level="INFO" doc:name="Logger" doc:id="36701760-27cb-4dde-8315-116f743c4372" message='#["ProductName " ++ vars.productNameVar]'/>
 	</flow>
+	<flow name="dw-xmlFlow" doc:id="a37e2597-7c2d-4c76-a72b-3c92a45f0285" >
+		<ee:transform doc:name="Transform Message" doc:id="536e4458-1832-4e44-a31a-04a570a82324" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var upr = upper
+---
+{
+	"UpperCase": upr('krish'),
+	"TimeZone": now() as TimeZone,
+	"Time": now() as Time,
+	"Date": now() as Date,
+	"CData": "KK" as CData
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
 </mule>
