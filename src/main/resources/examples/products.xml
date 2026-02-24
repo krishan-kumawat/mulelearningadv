@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<way2learn:products xmlns:way2learn="http://way2learnonline.com/domain">
+
+    <product productId="1">
+        <brandName>HP</brandName>
+        <description>HP Laptop</description>
+        <images>
+            <image>image1.jpeg</image>
+            <image>image2.jpeg</image>
+            <image>image3.jpeg</image>
+        </images>
+        <name>HP Pavilion Laptop</name>
+        <offer>
+            <offerPrice>45000.0</offerPrice>
+            <offerValidUntil>2026-12-31</offerValidUntil>
+        </offer>
+        <originalPrice>50000.0</originalPrice>
+    </product>
+
+    <product productId="2">
+        <brandName>Apple</brandName>
+        <description>Apple Laptop</description>
+        <images>
+            <image>image4.jpeg</image>
+            <image>image5.jpeg</image>
+            <image>image6.jpeg</image>
+        </images>
+        <name>MacBook Pro</name>
+        <offer>
+            <offerPrice>180000.0</offerPrice>
+            <offerValidUntil>2026-12-31</offerValidUntil>
+        </offer>
+        <originalPrice>200000.0</originalPrice>
+    </product>
+
+    <product productId="3">
+        <brandName>Dell</brandName>
+        <description>Dell Laptop</description>
+        <images>
+            <image>image7.jpeg</image>
+            <image>image8.jpeg</image>
+        </images>
+        <name>Dell Inspiron</name>
+        <offer>
+            <offerPrice>60000.0</offerPrice>
+            <offerValidUntil>2026-10-30</offerValidUntil>
+        </offer>
+        <originalPrice>65000.0</originalPrice>
+    </product>
+
+    <product productId="4">
+        <brandName>Lenovo</brandName>
+        <description>Lenovo Laptop</description>
+        <images>
+            <image>image9.jpeg</image>
+            <image>image10.jpeg</image>
+        </images>
+        <name>Lenovo ThinkPad</name>
+        <offer>
+            <offerPrice>70000.0</offerPrice>
+            <offerValidUntil>2026-11-15</offerValidUntil>
+        </offer>
+        <originalPrice>75000.0</originalPrice>
+    </product>
+
+    <product productId="5">
+        <brandName>Asus</brandName>
+        <description>Asus Laptop</description>
+        <images>
+            <image>image11.jpeg</image>
+            <image>image12.jpeg</image>
+        </images>
+        <name>Asus VivoBook</name>
+        <offer>
+            <offerPrice>55000.0</offerPrice>
+            <offerValidUntil>2026-09-30</offerValidUntil>
+        </offer>
+        <originalPrice>60000.0</originalPrice>
+    </product>
+
+    <product productId="6">
+        <brandName>Acer</brandName>
+        <description>Acer Laptop</description>
+        <images>
+            <image>image13.jpeg</image>
+            <image>image14.jpeg</image>
+        </images>
+        <name>Acer Aspire</name>
+        <offer>
+            <offerPrice>52000.0</offerPrice>
+            <offerValidUntil>2026-08-31</offerValidUntil>
+        </offer>
+        <originalPrice>58000.0</originalPrice>
+    </product>
+
+    <product productId="7">
+        <brandName>MSI</brandName>
+        <description>Gaming Laptop</description>
+        <images>
+            <image>image15.jpeg</image>
+            <image>image16.jpeg</image>
+        </images>
+        <name>MSI Gaming Laptop</name>
+        <offer>
+            <offerPrice>95000.0</offerPrice>
+            <offerValidUntil>2026-12-15</offerValidUntil>
+        </offer>
+        <originalPrice>105000.0</originalPrice>
+    </product>
+
+    <product productId="8">
+        <brandName>Samsung</brandName>
+        <description>Samsung Laptop</description>
+        <images>
+            <image>image17.jpeg</image>
+            <image>image18.jpeg</image>
+        </images>
+        <name>Samsung Galaxy Book</name>
+        <offer>
+            <offerPrice>80000.0</offerPrice>
+            <offerValidUntil>2026-10-10</offerValidUntil>
+        </offer>
+        <originalPrice>85000.0</originalPrice>
+    </product>
+
+    <product productId="9">
+        <brandName>Microsoft</brandName>
+        <description>Surface Laptop</description>
+        <images>
+            <image>image19.jpeg</image>
+            <image>image20.jpeg</image>
+        </images>
+        <name>Surface Laptop 5</name>
+        <offer>
+            <offerPrice>120000.0</offerPrice>
+            <offerValidUntil>2026-12-01</offerValidUntil>
+        </offer>
+        <originalPrice>130000.0</originalPrice>
+    </product>
+
+    <product productId="10">
+        <brandName>Huawei</brandName>
+        <description>Huawei Laptop</description>
+        <images>
+            <image>image21.jpeg</image>
+            <image>image22.jpeg</image>
+        </images>
+        <name>Huawei Gram</name>
+        <offer>
+            <offerPrice>140000.0</offerPrice>
+            <offerValidUntil>2026-11-30</offerValidUntil>
+        </offer>
+        <originalPrice>150000.0</originalPrice>
+    </product>
+
+    <product productId="11">
+        <brandName>HP</brandName>
+        <description>Razer Gaming Laptop</description>
+        <images>
+            <image>image23.jpeg</image>
+            <image>image24.jpeg</image>
+        </images>
+        <name>Razer Blade</name>
+        <offer>
+            <offerPrice>200000.0</offerPrice>
+            <offerValidUntil>2026-12-31</offerValidUntil>
+        </offer>
+        <originalPrice>220000.0</originalPrice>
+    </product>
+
+    <product productId="12">
+        <brandName>Huawei</brandName>
+        <description>Huawei Laptop</description>
+        <images>
+            <image>image25.jpeg</image>
+            <image>image26.jpeg</image>
+        </images>
+        <name>Huawei MateBook</name>
+        <offer>
+            <offerPrice>90000.0</offerPrice>
+            <offerValidUntil>2026-09-15</offerValidUntil>
+        </offer>
+        <originalPrice>98000.0</originalPrice>
+    </product>
+
+</way2learn:products>
