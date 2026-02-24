@@ -35,4 +35,39 @@ getAllstatesFromFile("examples/states.xml")]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="898fcbba-6329-4de1-b526-afe3ff11b000" message='#[%dw 2.0&#10;import try from dw::Runtime&#10;---&#10;try(()-&gt; readUrl("classpath://examples/states.xml", "aaplication/xml"))]'/>
 	</flow>
+	<flow name="try-failFlow1" doc:id="f15d4398-4020-4f68-bae8-a1d9fc505a97" >
+		<http:listener doc:name="Listener" doc:id="1342279d-86fc-4a3b-b8ac-138139fb3be0" config-ref="HTTP_Listener_config" path="/file"/>
+		<ee:transform doc:name="Transform Message" doc:id="ecf4053b-713e-49e4-af58-8488563ce7e4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::Runtime
+output application/dw
+
+var fileNameFromQ = attributes.queryParams.file as String  default "states.xml"
+
+fun getAllstatesFromFile(fileName:String)=
+	do {
+		var tryResult = try(()-> readUrl("classpath://examples/"++ fileName, "aaplication/xml"))
+		--- 
+		tryResult match {
+			case myoutput if(myoutput.success ~= false) -> fail("There are no such file "+ fileName)
+			else -> $.result
+		}	
+	}
+	
+fun getStateDetailsByName(name)=
+	do{
+		var statesXml = getAllstatesFromFile("states.xml")
+		---
+		statesXml.states.*state[?($.@name ~= name)].@[0]
+	}
+---
+getAllstatesFromFile(fileNameFromQ)
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="f73f17a2-8886-4175-a9db-fed2f58ee03d" message='#["file endpoint has been called " ++ (attributes.queryParams.file as String  default "states.xml")]'/>
+	</flow>
 </mule>
