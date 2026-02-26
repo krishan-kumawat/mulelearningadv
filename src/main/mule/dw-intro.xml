@@ -27,7 +27,7 @@ words orderBy $$
 		</ee:transform>
 	</flow>
 	<flow name="dw-introFlow1" doc:id="3e2e36ce-aa22-4c55-9fad-e7d9b558bcf1" >
-		<http:listener doc:name="Listener" doc:id="6a9b3c0e-f972-4bd8-ac8e-c7aa6b4fc693" config-ref="HTTP_Listener_config" path="/payload-json"/>
+		<http:listener doc:name="Listener" doc:id="6a9b3c0e-f972-4bd8-ac8e-c7aa6b4fc693" config-ref="HTTP_Listener_config" path="/payload-json1"/>
 		<ee:transform doc:name="Transform Message" doc:id="f3932cbf-9e37-4d3a-8bcb-e6e7adf28845" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

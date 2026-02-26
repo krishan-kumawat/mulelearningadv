@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="joindatasetsusinglookupFlow" doc:id="0014b977-c212-48b2-836a-d32af66d2374" >
+		<http:listener doc:name="Listener" doc:id="6ac04d3d-8ad9-4b7a-841d-3067ed626b67" config-ref="HTTP_Listener_config" path="joindatasetsusinglookup.xml"/>
+		<logger level="INFO" doc:name="Logger" doc:id="248e4135-8de6-4d89-a30c-ced67e5d54e7" message="#[p('test.message')]"/>
+		<ee:transform doc:name="Transform Message" doc:id="69fb8c32-767c-45bd-92a0-0e2d3257ec3d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import java!mulelearningadv::SecurityUtil
+output application/java
+---
+
+{
+	a: SecurityUtil::checkSecturity()
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

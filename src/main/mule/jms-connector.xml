@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<flow name="jms-publishMessageFlow" doc:id="e7e4d368-a487-4cb3-b60a-8837e99e82d4" >
+		<http:listener doc:name="Listener" doc:id="101cb11b-4ebd-4d6b-b359-e8b1d8ec2b05" config-ref="HTTP_Listener_config" path="/jms"/>
+		<jms:publish doc:name="Publish" doc:id="d99777b5-2485-477b-80f3-7d3b138b26e5" config-ref="JMS_Config" destination="inq"/>
+		<logger level="INFO" doc:name="Logger" doc:id="418fb586-f78b-4043-84df-33b3609569ce" message="#[payload]"/>
+	</flow>
+	<flow name="jms-connectorFlow" doc:id="7703bea9-b9dd-486c-a6e6-2f3136cf3e10" >
+		<jms:listener doc:name="On New Message" doc:id="b8542b4f-deb5-473e-83c2-17efd078cdde" destination="inq" config-ref="JMS_Config">
+			<jms:consumer-type >
+				<jms:queue-consumer />
+			</jms:consumer-type>
+		</jms:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="d6eaf07f-8f64-4194-9547-6631b5599fd1" message="[#[payload]"/>
+	</flow>
+</mule>
