@@ -8,10 +8,61 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="munit-test-test-suite.xml" />
+	<munit:before-test name="munit-test-test-suiteBefore_Test" doc:id="bbbf155b-612a-4642-9259-0cab72eeebb5" >
+		<logger level="INFO" doc:name="Logger" doc:id="2d99e671-1b25-4fc7-875d-66c433566474" message="Before Test case called" />
+		<munit:set-event doc:name="Set Event" doc:id="f144170e-6bb9-4582-92b2-ee403f6f518f">
+			<munit:attributes value="#[readUrl('classpath://munittest/queryparamsinput.dwl')]" />
+			</munit:set-event>
+	</munit:before-test>
 	<munit:test name="munit-test-test-suite-munit-testFlowTest" doc:id="c2db6b06-0b65-46c8-93fa-107193b8adf1" description="Test">
 		<munit:execution >
 			<flow-ref doc:name="Flow-ref to munit-testFlow" doc:id="2e6a5dd8-31ef-441a-8f50-9c0283a38e77" name="munit-testFlow"/>
 		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="251c6c07-4427-42c3-a572-8d479ac2dd8f" actual="#[payload[0].firstName]" expected="#['Mary']" message="First Name should be match!"/>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c095617e-ba78-4398-9d09-8005b7304ba1" is="#[MunitTools::notNullValue()]" expression="#[payload[0].firstName]" message="name can't be null"/>
+			<munit-tools:assert doc:name="Assert expression" doc:id="321d072c-93fa-4c13-bc05-9ec624a077f1" message="name doesn't matched">
+				<munit-tools:that ><![CDATA[#[import * from dw::test::Asserts 
+ ---
+payload[0].firstName must notBeNull()]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="munit-test-test-suiteTest" doc:id="66885b43-e64d-4d35-9de2-d7a9728e7f26" >
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="640913f3-0800-499e-a1eb-2aa1b972e4d1" name="munit-testFlow1"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="c31ccd75-de71-4cb9-9b47-84445e171295" processor="db:select" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="SelectEMPBYID" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<logger level="INFO" doc:name="Logger" doc:id="a007904b-30cb-4c98-a066-0e8685141e53" message="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="munit-mocking" doc:id="d075fd2c-6094-4433-b50b-b099aed887f4" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="b8f55d91-7182-41c4-86f1-7f267481c93f" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="SelectEMPBYID" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[[&#10;  {&#10;    "employeeNumber": 10001,&#10;    "lastName": "Patterson",&#10;    "firstName": "Mary",&#10;    "extension": "x4611",&#10;    "email": "mpatterso@classicmodelcars.com",&#10;    "officeCode": "1",&#10;    "reportsTo": 1002,&#10;    "jobTitle": "VP Sales"&#10;  }&#10;]]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="41d92213-26e2-4915-ae14-6162009fd435" name="SelectEMPBY_IDFLOW"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert doc:name="Assert expression" doc:id="b8b40059-b53f-4b64-b39f-7b9bbc09d73d" >
+				<munit-tools:that ><![CDATA[#[import munittest::responsejson
+ ---
+ 
+ responsejson::main({payload:payload, attributes:attributes, vars:vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
 	</munit:test>
 
 

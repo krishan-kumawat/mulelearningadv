@@ -24,4 +24,24 @@ payload]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="019e55af-52b2-4742-8c5a-57e97ede8b8a" message="#[payload]"/>
 	</flow>
+	<flow name="munit-testFlow1" doc:id="251029fb-6e36-417b-b36a-6a17388adb38" >
+		<http:listener doc:name="Listener" doc:id="4ca19fd9-f2c7-48dd-be0b-6c8d709db7af" config-ref="HTTP_Listener_config" path="/munit-case2"/>
+		<flow-ref doc:name="Flow Reference" doc:id="32a71a6e-9f1a-4e62-bd29-20468372cf2e" name="SelectEMPBY_IDFLOW"/>
+		<ee:transform doc:name="Transform Message" doc:id="7b7b5270-2959-4d7a-95b1-23345836ff95" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="SelectEMPBY_IDFLOW" doc:id="72bc69f8-45ab-4d00-b0bc-1c3eab866b3b" >
+		<db:select doc:name="SelectEMPBYID" doc:id="e2b77a0c-15ab-4297-882f-c351cf9513ec" config-ref="MysqlDB_Config">
+			<db:sql ><![CDATA[SELECT * FROM employees Where employeeNumber=:empid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+ empid: attributes.queryParams.id
+}]]]></db:input-parameters>
+		</db:select>
+	</flow>
 </mule>
